@@ -107,10 +107,8 @@ class MinDate {
       if (regxValue) {
         result.placeholder.setValue(this.date, regxValue[0])
       } else {
-        
+
       }
     }
   }
 }
-
-console.log(new MinDate('2023sss06', 'yyyysssmm').str("yyyysssmm"))
