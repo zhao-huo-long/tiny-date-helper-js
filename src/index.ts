@@ -1,3 +1,9 @@
+import dayjs from 'dayjs'
+import dayOfYear from 'dayjs/plugin/dayOfYear'
+// dayjs()
+dayjs.extend(dayOfYear)
+dayjs('2010-01-01')
+
 class LocalDate extends globalThis.Date {
   getMonth() {
     return super.getMonth.apply(this) + 1
@@ -10,15 +16,15 @@ class LocalDate extends globalThis.Date {
 
 interface Placeholder {
   name: string;
-  rExp: string | RegExp;
+  regExp: string | RegExp;
   setValue: (date: LocalDate, value: string) => unknown
   getValue: (date: LocalDate) => string | number
 }
 
-const placeholders: Placeholder[] = [
+const dfPlaceholders: Placeholder[] = [
   {
     name: 'yyyy',
-    rExp: /^\d{4}$/,
+    regExp: /^\d{4}$/,
     getValue(date) {
       return date.getFullYear().toString().padStart(4, '0')
     },
@@ -29,7 +35,7 @@ const placeholders: Placeholder[] = [
   },
   {
     name: 'mm',
-    rExp: /^\d{4}$/,
+    regExp: /^\d{4}$/,
     getValue(date) {
       return date.getMonth().toString().padStart(2, '0')
     },
@@ -45,19 +51,17 @@ interface Matched {
   end: number
 }
 
-class MinDate {
+export class DateHelper {
   protected date: LocalDate = new Date;
-  constructor(initValue?: Date | string, format?: string) {
+  protected placeholders: Placeholder[] = [];
+  constructor(initValue?: Date | string | number, format?: string, placeholders: Placeholder[] = []) {
+    this.placeholders = [...placeholders, ...dfPlaceholders]
     if (typeof initValue === 'string' && typeof format === 'string') {
       this.date = new LocalDate()
       this.parse(initValue, format)
       return
     }
-    if (typeof initValue === 'string' && typeof format !== 'string') {
-      this.date = new LocalDate(initValue)
-      return
-    }
-    if (initValue instanceof Date) {
+    if (initValue) {
       this.date = new LocalDate(initValue)
       return
     }
@@ -79,8 +83,8 @@ class MinDate {
     const match: Matched[] = []
     while (start < format.length) {
       let find = false
-      for (let i = 0; i < placeholders.length; i++) {
-        const placeholder = placeholders[i]
+      for (let i = 0; i < this.placeholders.length; i++) {
+        const placeholder = this.placeholders[i]
         const result = format.indexOf(placeholder.name, start)
         if (result > -1) {
           find = true
@@ -103,12 +107,62 @@ class MinDate {
   parse(dateStr: string, format: string) {
     const results = this.matchFormatStr(format)
     for (const result of results) {
-      const regxValue = dateStr.slice(result.start, result.end).match(result.placeholder.rExp)
-      if (regxValue) {
-        result.placeholder.setValue(this.date, regxValue[0])
+      const regexValue = dateStr.slice(result.start, result.end).match(result.placeholder.regExp)
+      if (regexValue) {
+        result.placeholder.setValue(this.date, regexValue[0])
       } else {
 
       }
     }
   }
+
+  toDate() {
+    return new Date(this.toNumber())
+  }
+
+  toNumber() {
+    return this.date.getTime()
+  }
 }
+
+interface Factory {
+  (initValue?: Date | string, format?: string): DateHelper
+  pluginList: DateHelperPlugin[]
+  install: (plugin?: DateHelperPlugin) => void
+}
+
+/**
+ * @param initValue 
+ * @param format 
+ * @returns 
+ */
+const factory: Factory = function (initValue?: Date | string, format?: string, placeholder?: Placeholder[]) {
+  const dateHelper = new DateHelper(initValue, format, placeholder)
+  for (const plugin of factory.pluginList) {
+    Object.assign(dateHelper, {
+      [plugin.name]: plugin.implement
+    })
+  }
+  return dateHelper
+}
+
+interface DateHelperPlugin {
+  name: string;
+  implement: (date: DateHelper) => any;
+}
+
+factory.pluginList = []
+
+factory.install = function (plugin?: DateHelperPlugin) {
+  if (plugin) {
+    if (factory.pluginList.indexOf(plugin) > -1) {
+      console.warn(`plugin [${plugin.name}] installed two times`)
+    } else {
+      factory.pluginList.push(plugin)
+    }
+  }
+}
+
+export const dateHelper = factory
+
+export default factory
