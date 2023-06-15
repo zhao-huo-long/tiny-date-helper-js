@@ -1,14 +1,16 @@
-// /// <reference path="../index.ts" />
+import type { DateHelperPlugin } from "tiny-date-helper-js"
 
-// namespace DateHelper {
-//   add: (num: number, type: 'day' | 'hour' | 'seconds' | 'minute') => DateHelper
-// }
+declare module 'tiny-date-helper-js' {
+  
+}
 
+const add: DateHelperPlugin = {
+  name: 'add',
+  implement: {
+    add(d) {
+      return 0
+    }
+  }
+}
 
-
-// export default {
-//   name: 'add',
-//   implements: {
-    
-//   }
-// }
+export default add
