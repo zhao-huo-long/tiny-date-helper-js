@@ -1,52 +1,7 @@
-class LocalDate extends globalThis.Date {
-  getMonth() {
-    return super.getMonth.apply(this) + 1
-  }
-  setMonth(value: number) {
-    super.setMonth.apply(this, [value - 1])
-    return value - 1
-  }
-}
+import { DEF_FORMAT, dfPlaceholders } from "./constants";
+import { LocalDate } from './helper'
+import type { Placeholder } from './constants'
 
-interface Placeholder {
-  name: string;
-  regExp: string | RegExp;
-  setValue: (date: LocalDate, value: string) => unknown
-  getValue: (date: LocalDate) => string | number
-}
-
-const dfPlaceholders: Placeholder[] = [
-  {
-    name: 'yyyy',
-    regExp: /^\d{4}$/,
-    getValue(date) {
-      return date.getFullYear().toString().padStart(4, '0')
-    },
-    setValue(date, value) {
-      return date.setFullYear(parseInt(value))
-    }
-  },
-  {
-    name: 'mm',
-    regExp: /^\d{2}$/,
-    getValue(date) {
-      return date.getMonth().toString().padStart(2, '0')
-    },
-    setValue(date, value) {
-      return date.setMonth(parseInt(value))
-    }
-  },
-  {
-    name: 'dd',
-    regExp: /^\d{2}$/,
-    getValue(date) {
-      return date.getDate().toString().padStart(2, '0')
-    },
-    setValue(date, value) {
-      return date.setDate(parseInt(value))
-    }
-  },
-]
 
 interface Matched {
   placeholder: Placeholder
@@ -54,7 +9,14 @@ interface Matched {
   end: number
 }
 
+// interface DateHelper {
+//   str(format: string): string
+//   toDate(): Date
+//   toNumber(): number
+// }
+
 class DateHelper {
+
   private date: LocalDate = new Date;
   private placeholders: Placeholder[] = [];
 
@@ -72,11 +34,11 @@ class DateHelper {
     this.date = new LocalDate()
   }
 
-  public str(format: string) {
+  public str(format: string = DEF_FORMAT) {
     const formatList = format.split('')
     const results = this.matchFormatStr(format)
     for (const result of results) {
-      formatList.splice(result.start, result.end - result.start - 1,)
+      formatList.splice(result.start, result.end - result.start - 1)
       formatList[result.start] = result.placeholder.getValue(this.date).toString()
 
     }
@@ -109,7 +71,7 @@ class DateHelper {
     return match
   }
 
-  public parse(dateStr: string, format: string) {
+  protected parse(dateStr: string, format: string = DEF_FORMAT) {
     const results = this.matchFormatStr(format)
     for (const result of results) {
       const regexValue = dateStr.slice(result.start, result.end).match(result.placeholder.regExp)
@@ -152,9 +114,10 @@ const factory: Factory = function (initValue?: Date | string | number, format?: 
 interface DateHelperPlugin {
   name: string;
   implement: {
-    [key: string]: (date: LocalDate, ...args: any[]) => unknown
+    [key: string]: (date: LocalDate, ...args: unknown[]) => unknown
   };
 }
+
 
 factory.pluginList = []
 

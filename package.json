@@ -1,6 +1,6 @@
 {
   "name": "tiny-date-helper-js",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "",
   "main": "./dist/index.js",
   "type": "commonjs",
@@ -14,7 +14,6 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.22.5",
-    "dayjs": "^1.11.8"
   },
   "devDependencies": {
     "@babel/plugin-transform-runtime": "^7.22.5",
