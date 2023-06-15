@@ -1,9 +1,3 @@
-import dayjs from 'dayjs'
-import dayOfYear from 'dayjs/plugin/dayOfYear'
-// dayjs()
-dayjs.extend(dayOfYear)
-dayjs('2010-01-01')
-
 class LocalDate extends globalThis.Date {
   getMonth() {
     return super.getMonth.apply(this) + 1
