@@ -23,18 +23,27 @@ const dfPlaceholders: Placeholder[] = [
       return date.getFullYear().toString().padStart(4, '0')
     },
     setValue(date, value) {
-      console.log(date, parseInt(value))
       return date.setFullYear(parseInt(value))
     }
   },
   {
     name: 'mm',
-    regExp: /^\d{4}$/,
+    regExp: /^\d{2}$/,
     getValue(date) {
       return date.getMonth().toString().padStart(2, '0')
     },
     setValue(date, value) {
       return date.setMonth(parseInt(value))
+    }
+  },
+  {
+    name: 'dd',
+    regExp: /^\d{2}$/,
+    getValue(date) {
+      return date.getDate().toString().padStart(2, '0')
+    },
+    setValue(date, value) {
+      return date.setDate(parseInt(value))
     }
   },
 ]
@@ -45,9 +54,10 @@ interface Matched {
   end: number
 }
 
-export class DateHelper {
-  protected date: LocalDate = new Date;
-  protected placeholders: Placeholder[] = [];
+class DateHelper {
+  private date: LocalDate = new Date;
+  private placeholders: Placeholder[] = [];
+
   constructor(initValue?: Date | string | number, format?: string, placeholders: Placeholder[] = []) {
     this.placeholders = [...placeholders, ...dfPlaceholders]
     if (typeof initValue === 'string' && typeof format === 'string') {
@@ -61,7 +71,8 @@ export class DateHelper {
     }
     this.date = new LocalDate()
   }
-  str(format: string) {
+
+  public str(format: string) {
     const formatList = format.split('')
     const results = this.matchFormatStr(format)
     for (const result of results) {
@@ -98,29 +109,29 @@ export class DateHelper {
     return match
   }
 
-  parse(dateStr: string, format: string) {
+  public parse(dateStr: string, format: string) {
     const results = this.matchFormatStr(format)
     for (const result of results) {
       const regexValue = dateStr.slice(result.start, result.end).match(result.placeholder.regExp)
       if (regexValue) {
         result.placeholder.setValue(this.date, regexValue[0])
       } else {
-
+        console.error(new Error(`${result.placeholder.name} not matches vaild value.`))
       }
     }
   }
 
-  toDate() {
+  public toDate() {
     return new Date(this.toNumber())
   }
 
-  toNumber() {
+  public toNumber() {
     return this.date.getTime()
   }
 }
 
 interface Factory {
-  (initValue?: Date | string, format?: string): DateHelper
+  (initValue?: Date | string | number, format?: string): DateHelper
   pluginList: DateHelperPlugin[]
   install: (plugin?: DateHelperPlugin) => void
 }
@@ -130,19 +141,19 @@ interface Factory {
  * @param format 
  * @returns 
  */
-const factory: Factory = function (initValue?: Date | string, format?: string, placeholder?: Placeholder[]) {
+const factory: Factory = function (initValue?: Date | string | number, format?: string, placeholder?: Placeholder[]) {
   const dateHelper = new DateHelper(initValue, format, placeholder)
   for (const plugin of factory.pluginList) {
-    Object.assign(dateHelper, {
-      [plugin.name]: plugin.implement
-    })
+    Object.assign(dateHelper, plugin.implement || {})
   }
   return dateHelper
 }
 
 interface DateHelperPlugin {
   name: string;
-  implement: (date: DateHelper) => any;
+  implement: {
+    [key: string]: (date: LocalDate, ...args: any[]) => unknown
+  };
 }
 
 factory.pluginList = []
@@ -156,7 +167,5 @@ factory.install = function (plugin?: DateHelperPlugin) {
     }
   }
 }
-
-export const dateHelper = factory
 
 export default factory
