@@ -2,6 +2,7 @@ import { DEF_FORMAT, dfPlaceholders } from "./constants";
 import { LocalDate } from './helper'
 import type { Placeholder } from './constants'
 
+export type * from './helper'
 
 interface Matched {
   placeholder: Placeholder
@@ -102,17 +103,22 @@ function factory(initValue?: Date | string | number, format?: string, placeholde
 export interface DateHelperPlugin {
   name: string;
   implement: {
-    [key: string]: (date: LocalDate, ...args: unknown[]) => unknown
+    [key: string]: (this: LocalDate, ...args: any[]) => any
   };
 }
 
 factory.pluginList = [] as DateHelperPlugin[]
 
-factory.install = function  install (plugin?: DateHelperPlugin) {
+factory.install = function install(plugin?: DateHelperPlugin) {
   if (plugin) {
     if (factory.pluginList.indexOf(plugin) > -1) {
       console.warn(`plugin [${plugin.name}] installed two times`)
     } else {
+      const handler: Record<string, (...args: unknown[]) => unknown> = {}
+      for (const name in plugin.implement) {
+        const fn = plugin.implement[name]
+        handler[name] = fn
+      }
       factory.pluginList.push(plugin)
     }
   }

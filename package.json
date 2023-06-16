@@ -2,10 +2,11 @@
   "name": "tiny-date-helper-js",
   "version": "1.0.1",
   "description": "",
-  "main": "./dist/index.js",
+  "main": "./dist/lib/index.js",
   "type": "commonjs",
-  "types": "./types",
+  "types": "./types/lib",
   "scripts": {
+    "prebuild": "node scripts/prebuild.js",
     "build": "tsc && rollup --config",
     "test": "node test.js"
   },

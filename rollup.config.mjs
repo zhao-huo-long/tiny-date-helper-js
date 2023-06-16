@@ -4,13 +4,16 @@ import { babel } from '@rollup/plugin-babel';
  * plugin list website url: https://github.com/rollup/plugins
  */
 export default {
-  input: 'lib/index.js',
+  input: ['js/lib/index.js', 'js/plugins/add.js'],
   output: {
     format: 'cjs',
     dir: 'dist',
     preserveModules: true,
     preserveModulesRoot: 'src'
   },
+  external: [
+    'tiny-date-helper-js'
+  ],
   plugins: [
     babel(
       {
