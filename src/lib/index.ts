@@ -9,8 +9,11 @@ interface Matched {
   start: number
   end: number
 }
+export interface DateHelper extends DateHelperCls {
 
-class DateHelper {
+}
+
+class DateHelperCls {
 
   private date: LocalDate = new Date;
   private placeholders: Placeholder[] = [];
@@ -93,7 +96,7 @@ class DateHelper {
  * @returns 
  */
 function factory(initValue?: Date | string | number, format?: string, placeholder?: Placeholder[]) {
-  const dateHelper = new DateHelper(initValue, format, placeholder)
+  const dateHelper = new DateHelperCls(initValue, format, placeholder) as DateHelper
   for (const plugin of factory.pluginList) {
     Object.assign(dateHelper, plugin.implement || {})
   }
@@ -103,7 +106,7 @@ function factory(initValue?: Date | string | number, format?: string, placeholde
 export interface DateHelperPlugin {
   name: string;
   implement: {
-    [key: string]: (this: LocalDate, ...args: any[]) => any
+    [key: string]: (this: DateHelper, ...args: any[]) => any
   };
 }
 
@@ -124,6 +127,6 @@ factory.install = function install(plugin?: DateHelperPlugin) {
   }
 }
 
-factory.DateHelper = DateHelper
+factory.DateHelperCls = DateHelperCls
 
 export default factory

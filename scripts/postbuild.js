@@ -1,11 +1,11 @@
 const { rmSync } = require("fs");
 
 [
-  "./dist",
-  "./types"
+  "./js",
 ].map(dir => {
   try {
     rmSync(dir, { recursive: true, })
   } catch (error) {
+    console.log(error)
   }
 });
