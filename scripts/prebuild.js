@@ -1,8 +1,7 @@
-const { rmSync } = require("fs");
+const { rmSync, cpSync } = require("fs");
 
 [
   "./dist",
-  "./types"
 ].map(dir => {
   try {
     rmSync(dir, { recursive: true, })

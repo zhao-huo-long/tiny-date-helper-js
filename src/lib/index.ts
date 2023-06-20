@@ -9,7 +9,7 @@ interface Matched {
   start: number
   end: number
 }
-export interface DateHelper extends DateHelperCls {
+export interface DateHelper extends  DateHelperCls  {
 
 }
 
@@ -96,11 +96,11 @@ class DateHelperCls {
  * @returns 
  */
 function factory(initValue?: Date | string | number, format?: string, placeholder?: Placeholder[]) {
-  const dateHelper = new DateHelperCls(initValue, format, placeholder) as DateHelper
+  const dateHelper = new DateHelperCls(initValue, format, placeholder)
   for (const plugin of factory.pluginList) {
     Object.assign(dateHelper, plugin.implement || {})
   }
-  return dateHelper
+  return dateHelper as DateHelper
 }
 
 export interface DateHelperPlugin {

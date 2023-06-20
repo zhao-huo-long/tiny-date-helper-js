@@ -7,9 +7,9 @@ import typescript from '@rollup/plugin-typescript';
  * plugin list website url: https://github.com/rollup/plugins
  */
 export default {
-  input: { 'index': 'dist/index.js',},
+  input: { 'plugins/add': 'dist/plugins/add',},
   output: {
-    format: 'umd',
+    format: 'cjs',
     dir: 'dist',
     name: 'dateHelper',
     preserveModules: true,

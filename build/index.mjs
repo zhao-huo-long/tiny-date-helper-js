@@ -9,7 +9,7 @@ import typescript from '@rollup/plugin-typescript';
 export default {
   input: { 'index': 'dist/index.js',},
   output: {
-    format: 'umd',
+    format: 'cjs',
     dir: 'dist',
     name: 'dateHelper',
     preserveModules: true,

@@ -1,7 +1,7 @@
 
 import type { DateHelperPlugin, DateHelper } from 'tiny-date-helper-js'
 import factory from 'tiny-date-helper-js'
-
+factory.DateHelperCls
 
 const add: DateHelperPlugin = {
   name: 'add',

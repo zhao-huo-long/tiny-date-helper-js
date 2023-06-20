@@ -1,11 +1,14 @@
-const { rmSync } = require("fs");
+const { rmSync, cpSync } = require("fs");
+
+cpSync('./dist', '.', {
+  recursive: true
+});
 
 [
-  "./js",
+  // "./dist",
 ].map(dir => {
   try {
     rmSync(dir, { recursive: true, })
   } catch (error) {
-    console.log(error)
   }
 });
