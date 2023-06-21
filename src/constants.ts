@@ -63,6 +63,16 @@ export const dfPlaceholders: Placeholder[] = [
     }
   },
   {
+    name: 'sss',
+    regExp: /^\d{2}\.\d$/,
+    getValue(date) {
+      return `${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toFixed(1)}`
+    },
+    setValue(date, value) {
+      return date.setMilliseconds(parseInt(value))
+    }
+  },
+  {
     name: 'ss',
     regExp: /^\d{2}$/,
     getValue(date) {
@@ -73,14 +83,4 @@ export const dfPlaceholders: Placeholder[] = [
     }
   },
 
-  {
-    name: 'sss',
-    regExp: /^\d{2}\.\d$/,
-    getValue(date) {
-      return `${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toFixed(1)}`
-    },
-    setValue(date, value) {
-      return date.setMilliseconds(parseInt(value))
-    }
-  },
 ]
