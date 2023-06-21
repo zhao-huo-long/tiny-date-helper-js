@@ -1,4 +1,4 @@
-import type { LocalDate } from "./helper";
+import dateHelper from "./index";
 
 
 export const DEF_FORMAT = `YYYY-MM-DD hh:mm:ss`
@@ -7,8 +7,8 @@ export const DEF_FORMAT = `YYYY-MM-DD hh:mm:ss`
 export interface Placeholder {
   name: string;
   regExp: string | RegExp;
-  setValue: (date: LocalDate, value: string) => unknown
-  getValue: (date: LocalDate) => string | number
+  setValue: (date: dateHelper.LocalDate, value: string) => unknown
+  getValue: (date: dateHelper.LocalDate) => string | number
 }
 
 export const dfPlaceholders: Placeholder[] = [
@@ -70,6 +70,17 @@ export const dfPlaceholders: Placeholder[] = [
     },
     setValue(date, value) {
       return date.setSeconds(parseInt(value))
+    }
+  },
+
+  {
+    name: 'sss',
+    regExp: /^\d{2}\.\d$/,
+    getValue(date) {
+      return `${date.getSeconds().toString().padStart(2, '0')}.${date.getMilliseconds().toFixed(1)}`
+    },
+    setValue(date, value) {
+      return date.setMilliseconds(parseInt(value))
     }
   },
 ]

@@ -126,5 +126,7 @@ dist
 .yarn/install-state.gz
 .pnp.*
 dist
-lib/
 types
+*.d.ts
+/plugins
+/index.js

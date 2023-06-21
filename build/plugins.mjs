@@ -1,6 +1,4 @@
-import { babel } from '@rollup/plugin-babel';
-import { nodeResolve } from '@rollup/plugin-node-resolve';
-import typescript from '@rollup/plugin-typescript';
+import base from './base.rollup.mjs'
 
 /**
  * china official website url: https://cn.rollupjs.org/
@@ -9,24 +7,11 @@ import typescript from '@rollup/plugin-typescript';
 export default {
   input: { 'plugins/add': 'dist/plugins/add',},
   output: {
-    format: 'cjs',
-    dir: 'dist',
+    format: 'umd',
+    dir: '.',
     name: 'dateHelper',
     preserveModules: true,
     preserveModulesRoot: 'src',
   },
-  external: [
-    'tiny-date-helper-js',
-    /node_modules/
-  ],
-  plugins: [
-    // typescript({}),
-    nodeResolve({}),
-    babel(
-      {
-        presets: ["@babel/preset-env",],
-        babelHelpers: "runtime",
-        plugins: ["@babel/plugin-transform-runtime"]
-      })
-  ]
+  ...base,
 };

@@ -1,24 +1,20 @@
-
-import type { DateHelperPlugin, DateHelper } from 'tiny-date-helper-js'
-import factory from 'tiny-date-helper-js'
-factory.DateHelperCls
+import type { DateHelperPlugin, DateHelperCls } from 'tiny-date-helper-js'
+import dateHelper from 'tiny-date-helper-js'
 
 const add: DateHelperPlugin = {
   name: 'add',
   implement: {
-    add(this: DateHelper, value: number) {
+    add(this: DateHelperCls, value: number) {
       const date = this.toDate()
       date.setDate(date.getDate() + value)
-      return factory(date)
+      return dateHelper(date)
     }
   }
 }
 
-
-
 declare module "tiny-date-helper-js" {
-  interface DateHelper {
-    add(this: DateHelper, value: number, type: 'minute' | 'day'): void
+  interface DateHelperCls {
+    add(this: DateHelperCls, value: number, type: 'minute' | 'day'): void
   }
 }
 

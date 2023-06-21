@@ -3,11 +3,11 @@
   "version": "1.0.1",
   "description": "",
   "main": "index.js",
-  "type": "commonjs",
   "types": "index.d.ts",
+  "type": "commonjs",
   "scripts": {
     "prebuild": "node scripts/prebuild.js",
-    "postbuild": "node scripts/postbuild.js",
+    "postbuild": "gulp",
     "build": "tsc && rollup --config build/index.mjs && rollup --config build/plugins.mjs",
     "test": "node test.js"
   },
@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@babel/runtime": "^7.22.5",
+    "gulp": "^4.0.2",
     "tslib": "^2.5.3"
   },
   "devDependencies": {
