@@ -130,3 +130,5 @@ types
 *.d.ts
 /plugins
 /index.js
+/esm
+/umd

@@ -1,6 +1,8 @@
 const dateHelper = require('.')
 const { deepEqual } = require('assert')
 
+console.log(dateHelper)
+
 dateHelper.install({})
 
 deepEqual(dateHelper('2022-01-21 12:23:32').str("YYYY-MM-DD hh:mm:ss"), '2022-01-21 12:23:32', '格式化错误')

@@ -1,10 +1,17 @@
+const clean = require('gulp-clean');
 
 const { src, dest, task, series } = require('gulp')
 
-task('copy', function (cb) {
+
+task('del umd plugins dir', function (cb) {
   cb()
-  return src(['./dist/**/*.d.ts',]).pipe(dest('.'));
+  return src(['./umd/plugins',]).pipe(clean())
 })
 
-exports.default = series(task('copy'));
+task('copy umd file', function (cb) {
+  cb()
+  return src(['./umd/*',]).pipe(dest('.'));
+})
+
+exports.default = series(task('del umd plugins dir'), task('copy umd file'),);
 

@@ -1,17 +1,15 @@
 import base from './base.rollup.mjs'
+import deepMerge from 'deepmerge'
+import terser from '@rollup/plugin-terser';
 
 /**
  * china official website url: https://cn.rollupjs.org/
  * plugin list website url: https://github.com/rollup/plugins
  */
-export default {
-  input: { 'index': 'dist/index.js',},
+export default deepMerge(base({ format: 'umd', pluginsInputs: [], }), {
   output: {
-    format: 'umd',
-    dir: '.',
-    name: 'dateHelper',
     preserveModules: false,
-    preserveModulesRoot: 'src',
+    inlineDynamicImports: true
   },
-  ...base,
-};
+  plugins: [terser()]
+});

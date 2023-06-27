@@ -4,11 +4,10 @@
   "description": "",
   "main": "index.js",
   "types": "index.d.ts",
-  "type": "commonjs",
   "scripts": {
     "prebuild": "node scripts/prebuild.js",
     "postbuild": "gulp",
-    "build": "tsc && rollup --config build/index.mjs && rollup --config build/plugins.mjs",
+    "build": "rollup --config build/common.rollup.mjs && rollup --config build/esm.rollup.mjs && rollup --config build/umd.rollup.mjs ",
     "test": "node test.js"
   },
   "keywords": [],
@@ -24,7 +23,10 @@
     "@babel/preset-env": "^7.22.5",
     "@rollup/plugin-babel": "^6.0.3",
     "@rollup/plugin-node-resolve": "^15.1.0",
+    "@rollup/plugin-terser": "^0.4.3",
     "@rollup/plugin-typescript": "^11.1.1",
+    "deepmerge": "^4.3.1",
+    "gulp-clean": "^0.4.0",
     "rollup": "^3.25.1",
     "typescript": "^5.1.3"
   }

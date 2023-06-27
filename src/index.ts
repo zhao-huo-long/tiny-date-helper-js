@@ -49,7 +49,7 @@ namespace dateHelper {
   }
 }
 
-export class DateHelperCls {
+class DateHelperCls {
 
   private date: dateHelper.LocalDate = new Date;
   private placeholders: Placeholder[] = [];
