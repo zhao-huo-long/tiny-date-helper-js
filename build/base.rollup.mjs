@@ -18,8 +18,8 @@ export default (config = {}) => {
       ...pluginsInputs,
     },
     external: [
-      'tiny-date-helper-js',
-      /node_modules/
+      'tiny-time-js',
+      // /node_modules/
     ],
     output: {
       format: format,
@@ -34,8 +34,8 @@ export default (config = {}) => {
       babel(
         {
           presets: ["@babel/preset-env",],
-          babelHelpers: "runtime",
-          plugins: ["@babel/plugin-transform-runtime"]
+          babelHelpers: 'inline',
+          // plugins: ["@babel/plugin-transform-runtime"]
         })
     ]
   }

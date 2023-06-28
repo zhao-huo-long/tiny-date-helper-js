@@ -12,16 +12,16 @@ interface Matched {
  * @param format 
  * @returns 
  */
-function dateHelper(initValue?: Date | string | number | DateHelperCls, format?: string, placeholder?: Placeholder[]) {
+function timejs(initValue?: Date | string | number | DateHelperCls, format?: string, placeholder?: Placeholder[]) {
   const dateHelperIns = new DateHelperCls(initValue, format, placeholder) as DateHelper
-  for (const plugin of dateHelper.pluginList) {
+  for (const plugin of timejs.pluginList) {
     Object.assign(dateHelperIns, plugin.implement || {})
   }
   return dateHelperIns 
 }
 
 
-namespace dateHelper {
+namespace timejs {
   export const pluginList: DateHelperPlugin[] = []
 
   export class LocalDate extends globalThis.Date {
@@ -35,7 +35,7 @@ namespace dateHelper {
 
   export function install(plugin?: DateHelperPlugin) {
     if (plugin) {
-      if (dateHelper.pluginList.indexOf(plugin) > -1) {
+      if (timejs.pluginList.indexOf(plugin) > -1) {
         console.warn(`plugin [${plugin.name}] installed two times`)
       } else {
         const handler: Record<string, (...args: unknown[]) => unknown> = {}
@@ -43,7 +43,7 @@ namespace dateHelper {
           const fn = plugin.implement[name]
           handler[name] = fn
         }
-        dateHelper.pluginList.push(plugin)
+        timejs.pluginList.push(plugin)
       }
     }
   }
@@ -51,25 +51,25 @@ namespace dateHelper {
 
 class DateHelperCls {
 
-  private date: dateHelper.LocalDate = new dateHelper.LocalDate();
+  private date: timejs.LocalDate = new timejs.LocalDate();
   private placeholders: Placeholder[] = [];
 
   constructor(initValue?: Date | string | number | DateHelperCls, format?: string, placeholders: Placeholder[] = []) {
     this.placeholders = [...placeholders, ...dfPlaceholders]
     if (typeof initValue === 'string' && typeof format === 'string') {
-      this.date = new dateHelper.LocalDate()
+      this.date = new timejs.LocalDate()
       this.parse(initValue, format)
       return
     }
     if(initValue instanceof DateHelperCls){
-      this.date = new dateHelper.LocalDate(initValue.toDate())
+      this.date = new timejs.LocalDate(initValue.toDate())
       return
     }
     if (initValue) {
-      this.date = new dateHelper.LocalDate(initValue)
+      this.date = new timejs.LocalDate(initValue)
       return
     }
-    this.date = new dateHelper.LocalDate()
+    this.date = new timejs.LocalDate()
   }
 
   public str(format: string = DEF_FORMAT) {
@@ -142,4 +142,4 @@ export interface DateHelperPlugin {
 }
 
 
-export default dateHelper
+export default timejs
