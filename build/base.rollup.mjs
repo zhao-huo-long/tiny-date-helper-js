@@ -3,7 +3,7 @@ import { nodeResolve } from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
 
 const plugins = {
-  'plugins/add': 'src/plugins/add.ts',
+  'plugins/isSameDay': 'src/plugins/isSameDay.ts',
 }
 
 /**

@@ -12,12 +12,12 @@ interface Matched {
  * @param format 
  * @returns 
  */
-function dateHelper(initValue?: Date | string | number, format?: string, placeholder?: Placeholder[]) {
-  const dateHelperIns = new DateHelperCls(initValue, format, placeholder)
+function dateHelper(initValue?: Date | string | number | DateHelperCls, format?: string, placeholder?: Placeholder[]) {
+  const dateHelperIns = new DateHelperCls(initValue, format, placeholder) as DateHelper
   for (const plugin of dateHelper.pluginList) {
-    Object.assign(dateHelper, plugin.implement || {})
+    Object.assign(dateHelperIns, plugin.implement || {})
   }
-  return dateHelperIns
+  return dateHelperIns 
 }
 
 
@@ -51,14 +51,18 @@ namespace dateHelper {
 
 class DateHelperCls {
 
-  private date: dateHelper.LocalDate = new Date;
+  private date: dateHelper.LocalDate = new dateHelper.LocalDate();
   private placeholders: Placeholder[] = [];
 
-  constructor(initValue?: Date | string | number, format?: string, placeholders: Placeholder[] = []) {
+  constructor(initValue?: Date | string | number | DateHelperCls, format?: string, placeholders: Placeholder[] = []) {
     this.placeholders = [...placeholders, ...dfPlaceholders]
     if (typeof initValue === 'string' && typeof format === 'string') {
       this.date = new dateHelper.LocalDate()
       this.parse(initValue, format)
+      return
+    }
+    if(initValue instanceof DateHelperCls){
+      this.date = new dateHelper.LocalDate(initValue.toDate())
       return
     }
     if (initValue) {
@@ -126,10 +130,14 @@ class DateHelperCls {
   }
 }
 
+export interface DateHelper extends DateHelperCls{
+
+}
+
 export interface DateHelperPlugin {
   name: string;
   implement: {
-    [key: string]: (this: DateHelperCls, ...args: any[]) => any
+    [key: string]: (this: DateHelper, ...args: any[]) => any
   };
 }
 
