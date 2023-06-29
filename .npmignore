@@ -1,0 +1,8 @@
+build
+scripts
+src
+.*
+gulpfile.js
+*.yaml
+test.js
+tsconfig.json
