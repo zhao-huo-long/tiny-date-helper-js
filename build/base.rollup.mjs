@@ -24,7 +24,7 @@ export default (config = {}) => {
     output: {
       format: format,
       dir: dir || format,
-      name: 'dateHelper',
+      name: 'timejs',
       preserveModules: true,
       preserveModulesRoot: 'src',
     },

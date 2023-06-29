@@ -3,6 +3,8 @@ const { rmSync, cpSync } = require("fs");
 [
   "./dist",
   "./plugins",
+  "./esm",
+  "umd",
 ].map(dir => {
   try {
     rmSync(dir, { recursive: true, })

@@ -6,7 +6,7 @@
   "types": "index.d.ts",
   "scripts": {
     "prebuild": "node scripts/prebuild.js",
-    "postbuild": "gulp",
+    "postbuild": "gulp && npm test",
     "build": "rollup --config build/common.rollup.mjs && rollup --config build/esm.rollup.mjs && rollup --config build/umd.rollup.mjs ",
     "test": "node test.js"
   },

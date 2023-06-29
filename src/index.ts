@@ -7,17 +7,24 @@ interface Matched {
   end: number
 }
 
+const definePropertiesConfig = {
+  date: {
+    enumerable: false
+  },
+}
+
 /**
  * @param initValue 
  * @param format 
  * @returns 
  */
-function timejs(initValue?: Date | string | number | DateHelperCls, format?: string, placeholder?: Placeholder[]) {
-  const dateHelperIns = new DateHelperCls(initValue, format, placeholder) as DateHelper
+function timejs(initValue?: Date | string | number | DateHelperCls, format?: string) {
+  const dateHelperIns = new DateHelperCls(initValue, format) as DateHelper
   for (const plugin of timejs.pluginList) {
     Object.assign(dateHelperIns, plugin.implement || {})
   }
-  return dateHelperIns 
+  Object.defineProperties(dateHelperIns, definePropertiesConfig)
+  return dateHelperIns
 }
 
 
@@ -38,11 +45,15 @@ namespace timejs {
       if (timejs.pluginList.indexOf(plugin) > -1) {
         console.warn(`plugin [${plugin.name}] installed two times`)
       } else {
-        const handler: Record<string, (...args: unknown[]) => unknown> = {}
+        const config: Record<string, any> = {}
         for (const name in plugin.implement) {
           const fn = plugin.implement[name]
-          handler[name] = fn
+          config[name] = {
+            value: fn,
+            enumerable: false
+          }
         }
+        Object.assign(DateHelperCls.prototype, config)
         timejs.pluginList.push(plugin)
       }
     }
@@ -52,16 +63,17 @@ namespace timejs {
 class DateHelperCls {
 
   private date: timejs.LocalDate = new timejs.LocalDate();
-  private placeholders: Placeholder[] = [];
-
-  constructor(initValue?: Date | string | number | DateHelperCls, format?: string, placeholders: Placeholder[] = []) {
-    this.placeholders = [...placeholders, ...dfPlaceholders]
+  static placeholders: Placeholder[] = dfPlaceholders;
+  static extendPlaceholders(placeholders: Placeholder[] = []) {
+    DateHelperCls.placeholders = [...placeholders, ...dfPlaceholders]
+  }
+  constructor(initValue?: Date | string | number | DateHelperCls, format?: string,) {
     if (typeof initValue === 'string' && typeof format === 'string') {
       this.date = new timejs.LocalDate()
       this.parse(initValue, format)
       return
     }
-    if(initValue instanceof DateHelperCls){
+    if (initValue instanceof DateHelperCls) {
       this.date = new timejs.LocalDate(initValue.toDate())
       return
     }
@@ -85,11 +97,12 @@ class DateHelperCls {
 
   private matchFormatStr(format: string) {
     let start = 0;
+    const placeholders = DateHelperCls.placeholders
     const match: Matched[] = []
     while (start < format.length) {
       let find = false
-      for (let i = 0; i < this.placeholders.length; i++) {
-        const placeholder = this.placeholders[i]
+      for (let i = 0; i < placeholders.length; i++) {
+        const placeholder = placeholders[i]
         const result = format.indexOf(placeholder.name, start)
         if (result > -1) {
           find = true
@@ -128,9 +141,13 @@ class DateHelperCls {
   public toNumber() {
     return this.date.getTime()
   }
+  
+  public toString() {
+    return this.str(`[${this.toNumber()}] YYYY-MM-DD hh:mm:ss`)
+  }
 }
 
-export interface DateHelper extends DateHelperCls{
+export interface DateHelper extends DateHelperCls {
 
 }
 

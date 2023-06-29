@@ -9,7 +9,7 @@ const isToday: DateHelperPlugin = {
         return true
       }
       return this.str("YYYY-MM-DD") === timejs(value).str("YYYY-MM-DD") 
-    } 
+    }
   }
 } as const
 
