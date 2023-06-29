@@ -1,4 +1,4 @@
-const { rmSync, cpSync } = require("fs");
+const { rmSync } = require("fs");
 
 [
   "./dist",

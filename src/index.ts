@@ -38,6 +38,14 @@ namespace timejs {
     setMonth(value: number) {
       return super.setMonth.apply(this, [value - 1])
     }
+    /**
+     * [1 - 7] => [星期1 - 星期天 更适合]
+     * @returns 
+     */
+    getDay(): number {
+      const d = super.getDay.apply(this)
+      return [7, 1, 2, 3, 4, 5, 6][d]
+    }
   }
 
   export function install(plugin?: DateHelperPlugin) {
@@ -58,15 +66,17 @@ namespace timejs {
       }
     }
   }
+
+  export function extendPlaceholders(placeholders: Placeholder[] = []) {
+    DateHelperCls.placeholders = [...placeholders, ...dfPlaceholders]
+  }
 }
 
 class DateHelperCls {
 
-  private date: timejs.LocalDate = new timejs.LocalDate();
-  static placeholders: Placeholder[] = dfPlaceholders;
-  static extendPlaceholders(placeholders: Placeholder[] = []) {
-    DateHelperCls.placeholders = [...placeholders, ...dfPlaceholders]
-  }
+  public date: timejs.LocalDate = new timejs.LocalDate();
+  static placeholders: Placeholder[] = [...dfPlaceholders];
+
   constructor(initValue?: Date | string | number | DateHelperCls, format?: string,) {
     if (typeof initValue === 'string' && typeof format === 'string') {
       this.date = new timejs.LocalDate()
@@ -138,10 +148,14 @@ class DateHelperCls {
     return new Date(this.toNumber())
   }
 
+  public dateStr() {
+    return this.str('YYYY-MM-DD')
+  }
+
   public toNumber() {
     return this.date.getTime()
   }
-  
+
   public toString() {
     return this.str(`[${this.toNumber()}] YYYY-MM-DD hh:mm:ss`)
   }

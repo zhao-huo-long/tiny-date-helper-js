@@ -4,6 +4,7 @@ import typescript from '@rollup/plugin-typescript';
 
 const plugins = {
   'plugins/isSameDay': 'src/plugins/isSameDay.ts',
+  'plugins/endOf': 'src/plugins/endOf.ts',
 }
 
 /**
@@ -19,7 +20,6 @@ export default (config = {}) => {
     },
     external: [
       'tiny-time-js',
-      // /node_modules/
     ],
     output: {
       format: format,
@@ -34,8 +34,7 @@ export default (config = {}) => {
       babel(
         {
           presets: ["@babel/preset-env",],
-          babelHelpers: 'inline',
-          // plugins: ["@babel/plugin-transform-runtime"]
+          babelHelpers: "bundled",
         })
     ]
   }

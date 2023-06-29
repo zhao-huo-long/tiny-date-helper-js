@@ -1,7 +1,7 @@
 {
   "name": "tiny-time-js",
-  "version": "1.0.1",
-  "description": "",
+  "version": "0.0.0",
+  "description": "时间日期处理工具库 🕰️, 提供了许多有用的日期和时间操作函数，如格式化日期、计算日期差异、格式解析等功能",
   "main": "index.js",
   "types": "index.d.ts",
   "scripts": {
@@ -10,7 +10,11 @@
     "build": "rollup --config build/common.rollup.mjs && rollup --config build/esm.rollup.mjs && rollup --config build/umd.rollup.mjs ",
     "test": "node test.js"
   },
-  "keywords": [],
+  "keywords": [
+    "时间处理",
+    "日期处理",
+    "格式化"
+  ],
   "author": "",
   "license": "ISC",
   "dependencies": {
