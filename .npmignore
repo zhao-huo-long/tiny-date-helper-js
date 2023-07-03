@@ -6,3 +6,6 @@ gulpfile.js
 *.yaml
 test.js
 tsconfig.json
+*.test.*
+*.config.js
+coverage

@@ -39,7 +39,7 @@ namespace timejs {
       return super.setMonth.apply(this, [value - 1])
     }
     /**
-     * [1 - 7] => [星期1 - 星期天 更适合]
+     * [1 - 7] => [星期1 - 星期天 更适合cn宝宝]
      * @returns 
      */
     getDay(): number {
@@ -84,7 +84,7 @@ class DateHelperCls {
       return
     }
     if (initValue instanceof DateHelperCls) {
-      this.date = new timejs.LocalDate(initValue.toDate())
+      this.date = new timejs.LocalDate(initValue.toNumber())
       return
     }
     if (initValue) {
@@ -100,36 +100,27 @@ class DateHelperCls {
     for (const result of results) {
       formatList.splice(result.start, result.end - result.start - 1)
       formatList[result.start] = result.placeholder.getValue(this.date).toString()
-
     }
     return formatList.join('')
   }
 
-  private matchFormatStr(format: string) {
-    let start = 0;
+  protected matchFormatStr(format: string) {
     const placeholders = DateHelperCls.placeholders
     const match: Matched[] = []
-    while (start < format.length) {
-      let find = false
-      for (let i = 0; i < placeholders.length; i++) {
-        const placeholder = placeholders[i]
-        const result = format.indexOf(placeholder.name, start)
-        if (result > -1) {
-          find = true
+    for (let i = 0; i < placeholders.length; i++) {
+      const placeholder = placeholders[i]
+      const results = format.matchAll(new RegExp(placeholder.name, 'g'),)
+      if (results) {
+        for (const result of results) {
           match.unshift({
             placeholder,
-            start: result,
-            end: result + placeholder.name.length
+            start: result.index!,
+            end: result.index! + result[0].length
           })
-          start = result + placeholder.name.length
-          break
         }
       }
-      if (!find) {
-        break
-      }
     }
-    return match
+    return match.sort((a, b) => b.start - a.start)
   }
 
   protected parse(dateStr: string, format: string = DEF_FORMAT) {
@@ -152,12 +143,12 @@ class DateHelperCls {
     return this.str('YYYY-MM-DD')
   }
 
+  /**
+   * 格林威治时间戳
+   * @returns 
+   */
   public toNumber() {
     return this.date.getTime()
-  }
-
-  public toString() {
-    return this.str(`[${this.toNumber()}] YYYY-MM-DD hh:mm:ss`)
   }
 }
 

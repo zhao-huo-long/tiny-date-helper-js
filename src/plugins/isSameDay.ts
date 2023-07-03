@@ -5,17 +5,17 @@ const isToday: DateHelperPlugin = {
   name: 'isSameDay',
   implement: {
     isSameDay(this: DateHelper, value: number | string | Date | DateHelper) {
-      if(!value){
+      if (!value) {
         return true
       }
-      return this.str("YYYY-MM-DD") === timejs(value).str("YYYY-MM-DD") 
+      return this.str("YYYY-MM-DD") === timejs(value).str("YYYY-MM-DD")
     }
   }
 } as const
 
 declare module "tiny-time-js" {
   interface DateHelper {
-    isSameDay(this: DateHelper, value: number | string | Date | DateHelper): void
+    isSameDay(this: DateHelper, value: number | string | Date | DateHelper): boolean
   }
 }
 

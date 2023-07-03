@@ -40,7 +40,7 @@ const endOf: DateHelperPlugin = {
 
 declare module "tiny-time-js" {
   interface DateHelper {
-    endOf(this: DateHelper, value: number | string | Date | DateHelper): void
+    endOf(this: DateHelper, type: 'month' | 'year' | 'week' | 'day'): DateHelper
   }
 }
 
