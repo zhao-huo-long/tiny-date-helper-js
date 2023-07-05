@@ -8,7 +8,7 @@ import isSameDay from './isSameDay'
 
 timejs.install(isSameDay)
 
-describe('plugin: isSameDay()', () => {
+describe('plugin: isSameDay', () => {
   test('today', () => {
     expect(timejs().isSameDay(timejs())).toBe(true)
   })

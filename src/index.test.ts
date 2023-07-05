@@ -56,6 +56,8 @@ describe('date text parse', () => {
     const str = `22080102`
     expect(timejs(str, `YYYY`).str(`YYYYYYYY`)).toBe(`22082208`)
   })
+
+
 });
 
 
@@ -78,6 +80,7 @@ describe('str()', () => {
   test('hh:mm:ss', () => {
     expect(timejs(`04:49:30`, `hh:mm:ss`).str(`hh:mm:ss`)).toBe(`04:49:30`)
     expect(timejs(`49:30:04`, `mm:ss:hh`).str(`mm:ss:hh`)).toBe(`49:30:04`)
+    expect(timejs(`49:30:04`, `mm:ss:hh`).str(`hh:mm`)).toBe(`04:49`)
   })
 
   test('YYYY MM', () => {

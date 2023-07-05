@@ -1,7 +1,7 @@
-import { DEF_FORMAT, dfPlaceholders } from "./constants";
+import { DEF_FORMAT, commonMatch, dfPlaceholders } from "./constants";
 import type { Placeholder } from './constants'
 
-interface Matched {
+export interface Matched {
   placeholder: Placeholder
   start: number
   end: number
@@ -28,9 +28,18 @@ function timejs(initValue?: Date | string | number | DateHelperCls, format?: str
 }
 
 
+
 namespace timejs {
   export const pluginList: DateHelperPlugin[] = []
-
+  export let week: Record<number, number> = {
+    0: 7,
+    1: 1,
+    2: 2,
+    3: 3,
+    4: 4,
+    5: 5,
+    6: 6,
+  }
   export class LocalDate extends globalThis.Date {
     getMonth() {
       return super.getMonth.apply(this) + 1
@@ -44,7 +53,7 @@ namespace timejs {
      */
     getDay(): number {
       const d = super.getDay.apply(this)
-      return [7, 1, 2, 3, 4, 5, 6][d]
+      return week?.[d] || d
     }
   }
 
@@ -106,6 +115,9 @@ class DateHelperCls {
 
   protected matchFormatStr(format: string) {
     const placeholders = DateHelperCls.placeholders
+    if(commonMatch[format]?.length){
+      return commonMatch[format]
+    }
     const match: Matched[] = []
     for (let i = 0; i < placeholders.length; i++) {
       const placeholder = placeholders[i]
@@ -120,7 +132,8 @@ class DateHelperCls {
         }
       }
     }
-    return match.sort((a, b) => b.start - a.start)
+    commonMatch[format] = match.sort((a, b) => b.start - a.start)
+    return commonMatch[format]
   }
 
   protected parse(dateStr: string, format: string = DEF_FORMAT) {

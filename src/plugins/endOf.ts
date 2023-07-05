@@ -12,7 +12,7 @@ const endOf: DateHelperPlugin = {
   name: 'endOf',
   implement: {
     endOf(this: DateHelper, type: 'month' | 'year' | 'week' | 'day') {
-      const date = new timejs.LocalDate(this.date)
+      const date = timejs(this).date
       switch (type) {
         case 'month':
           date.setMonth(date.getMonth() + 1)

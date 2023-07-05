@@ -4,12 +4,12 @@
   "description": "时间日期处理工具库 🕰️, 提供了日期和时间操作函数，如格式化日期、计算日期、格式解析等功能",
   "main": "index.js",
   "types": "index.d.ts",
+  "module": "esm",
   "scripts": {
     "prebuild": "node scripts/prebuild.js",
     "postbuild": "gulp",
     "build": "rollup --config build/common.rollup.mjs && rollup --config build/esm.rollup.mjs && rollup --config build/umd.rollup.mjs ",
-    "test": "npm run build && jest",
-    "postinstall": "npm run build",
+    "test": "jest",
     "clean": "node scripts/prebuild.js"
   },
   "keywords": [

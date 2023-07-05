@@ -1,4 +1,4 @@
-import dateHelper from "./index";
+import dateHelper, { Matched } from "./index";
 
 
 export const DEF_FORMAT = `YYYY-MM-DD hh:mm:ss`
@@ -73,3 +73,96 @@ export const dfPlaceholders: Placeholder[] = [
     }
   },
 ]
+
+
+export const commonMatch: Record<string, Matched[]> = {
+  'YYYY-MM': [
+    {
+      placeholder: dfPlaceholders[1],
+      start: 5,
+      end: 7
+    },
+    {
+      placeholder: dfPlaceholders[0],
+      start: 0,
+      end: 4
+    }
+  ],
+  'YYYY-MM-DD': [
+    {
+      placeholder: dfPlaceholders[2],
+      start: 8,
+      end: 10
+    },
+    {
+      placeholder: dfPlaceholders[1],
+      start: 5,
+      end: 7
+    },
+    {
+      placeholder: dfPlaceholders[0],
+      start: 0,
+      end: 4
+    }
+  ],
+  'YYYY-MM-DD hh:mm:ss':
+    [
+      {
+        placeholder: dfPlaceholders[5],
+        start: 17,
+        end: 19
+      },
+      {
+        placeholder: dfPlaceholders[4],
+        start: 14,
+        end: 16
+      },
+      {
+        placeholder: dfPlaceholders[3],
+        start: 11,
+        end: 13
+      },
+      {
+        placeholder: dfPlaceholders[2],
+        start: 8,
+        end: 10
+      },
+      {
+        placeholder: dfPlaceholders[1],
+        start: 5,
+        end: 7
+      },
+      {
+        placeholder: dfPlaceholders[0],
+        start: 0,
+        end: 4
+      }
+    ],
+  'hh:mm:ss': [
+    {
+      placeholder: dfPlaceholders[5],
+      start: 6,
+      end: 8
+    },
+    {
+      placeholder: dfPlaceholders[4],
+      start: 3,
+      end: 5
+    },
+    {
+      placeholder: dfPlaceholders[3],
+      start: 0,
+      end: 2
+    }
+  ],
+  'hh:mm': [{
+    placeholder: dfPlaceholders[4],
+    start: 3,
+    end: 5
+  },
+  {
+    placeholder: dfPlaceholders[3],
+    start: 0,
+    end: 2
+  }],
+} 

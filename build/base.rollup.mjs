@@ -5,6 +5,8 @@ import typescript from '@rollup/plugin-typescript';
 const plugins = {
   'plugins/isSameDay': 'src/plugins/isSameDay.ts',
   'plugins/endOf': 'src/plugins/endOf.ts',
+  'plugins/add': 'src/plugins/add.ts',
+  'plugins/calendar': 'src/plugins/calendar.ts',
 }
 
 /**
