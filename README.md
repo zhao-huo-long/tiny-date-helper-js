@@ -31,7 +31,7 @@ timejs('2020/02/01', 'YYYY/MM/DD')
 timejs('2020-02/01', 'YYYY-MM/DD')
 ```
 
-#### 判断是否同一天 - isSameDay
+#### 插件:判断是否同一天 - isSameDay
 ```typescript
 import timejs from 'tiny-date-js'
 import isSameDay from 'tiny-date-js/esm/plugins/isSameDay'
@@ -45,7 +45,7 @@ timejs().isSameDay(timejs('2021-07-03 12:00:00')) // false
 ```
 
 
-#### 最后时刻 - endOf
+#### 插件:最后时刻 - endOf
 ```typescript
 import timejs from 'tiny-date-js'
 import endOf from 'tiny-date-js/esm/plugins/endOf'
@@ -63,6 +63,31 @@ timejs('2023-07-03 12:00:00').endOf('week')
 
 // 2023-07-03该天的最后时刻 - 2023-07-03 23:59:59
 timejs('2023-07-03 12:00:00').endOf('day')
+```
+
+#### 插件:日历 - calender 
+默认周一是
+```typescript
+import timejs from 'tiny-date-js'
+import calender from 'tiny-date-js/esm/plugins/calender'
+
+timejs.install(calender)
+// 2023年7月日历
+timejs().calender(2023, 7)
+```
+```typescript
+interface Calender {
+    year: number;
+    month: number;
+    weekList: {
+      isToday: boolean;
+      isWeekend: boolean;
+      isCurrentMonth: boolean;
+      date: number;
+      day: number;
+      view: string;
+    }[][];
+}
 ```
 
 
