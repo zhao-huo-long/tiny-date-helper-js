@@ -46,6 +46,7 @@ timejs().isSameDay(timejs('2021-07-03 12:00:00')) // false
 
 
 #### 插件:最后时刻 - endOf
+默认星期一是一周的第一天
 ```typescript
 import timejs from 'tiny-date-js'
 import endOf from 'tiny-date-js/esm/plugins/endOf'
@@ -66,7 +67,7 @@ timejs('2023-07-03 12:00:00').endOf('day')
 ```
 
 #### 插件:日历 - calender 
-默认周一是
+默认星期一是一周的第一天
 ```typescript
 import timejs from 'tiny-date-js'
 import calender from 'tiny-date-js/esm/plugins/calender'

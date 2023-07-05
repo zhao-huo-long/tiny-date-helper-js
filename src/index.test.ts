@@ -26,6 +26,7 @@ describe('create', () => {
 });
 
 describe('date text parse', () => {
+  
   test('YYYY-MM-DD hh:mm:ss', () => {
     const str = `2008-01-02 23:49:30`
     expect(timejs(str).str()).toBe(str)
