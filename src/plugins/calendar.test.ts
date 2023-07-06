@@ -11,7 +11,7 @@ timejs.install(calendar);
 const cnWeek = timejs.week
 
 const foreignWeek = {
-  0: 1,
+  7: 1,
   1: 2,
   2: 3,
   3: 4,

@@ -32,28 +32,37 @@ function timejs(initValue?: Date | string | number | DateHelperCls, format?: str
 namespace timejs {
   export const pluginList: DateHelperPlugin[] = []
   export let week: Record<number, number> = {
-    0: 7,
     1: 1,
     2: 2,
     3: 3,
     4: 4,
     5: 5,
     6: 6,
+    7: 7,
   }
   export class LocalDate extends globalThis.Date {
+    /**
+     * 月份 1 - 12
+     * @returns 
+     */
     getMonth() {
       return super.getMonth.apply(this) + 1
     }
+    /**
+     * 月份 1 - 12 
+     * @param value {number}
+     * @returns 
+     */
     setMonth(value: number) {
       return super.setMonth.apply(this, [value - 1])
     }
     /**
-     * [1 - 7] => [星期1 - 星期天 更适合cn宝宝]
+     * [1 - 7] => [星期1 - 星期天]
      * @returns 
      */
     getDay(): number {
-      const d = super.getDay.apply(this)
-      return week?.[d] || d
+      const day = super.getDay.apply(this)
+      return [7, 1, 2, 3, 4, 5, 6][day] || day
     }
   }
 
@@ -115,7 +124,7 @@ class DateHelperCls {
 
   protected matchFormatStr(format: string) {
     const placeholders = DateHelperCls.placeholders
-    if(commonMatch[format]?.length){
+    if (commonMatch[format]?.length) {
       return commonMatch[format]
     }
     const match: Matched[] = []

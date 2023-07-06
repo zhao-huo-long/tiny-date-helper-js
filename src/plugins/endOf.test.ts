@@ -27,7 +27,7 @@ describe('plugin: endOf', () => {
     expect(timejs('2022-06-29').endOf('week').str()).toBe(`2022-07-03 23:59:59`)
     const week = timejs.week
     timejs.week = {
-      0: 1,
+      7: 1,
       1: 2,
       2: 3,
       3: 4,

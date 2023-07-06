@@ -25,7 +25,7 @@ const endOf: DateHelperPlugin = {
           setTimeEnd(date)
           return timejs(date)
         case 'week':
-          date.setDate(date.getDate() + 7 - date.getDay())
+          date.setDate(date.getDate() + 7 - timejs.week[date.getDay()])
           setTimeEnd(date)
           return timejs(date)
         case 'day':

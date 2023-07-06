@@ -33,12 +33,12 @@ function buildCalendarItem(dateHelper: DateHelper, year: number, month: number):
 }
 
 function weekItems(dateHelper: DateHelper, year: number, month: number) {
-  const monday = dateHelper.add(1 - dateHelper.date.getDay(), 'day')
-  const sunday = dateHelper.endOf('week')
+  const firstDay = dateHelper.add(1 - timejs.week[dateHelper.date.getDay()], 'day')
+  const lastDay = dateHelper.endOf('week')
   return [
-    buildCalendarItem(monday, year, month),
-    ...Array.from({ length: 5 }).map((_, i) => buildCalendarItem(monday.add(i + 1, 'day'), year, month)),
-    buildCalendarItem(sunday, year, month),
+    buildCalendarItem(firstDay, year, month),
+    ...Array.from({ length: 5 }).map((_, i) => buildCalendarItem(firstDay.add(i + 1, 'day'), year, month)),
+    buildCalendarItem(lastDay, year, month),
   ]
 }
 
