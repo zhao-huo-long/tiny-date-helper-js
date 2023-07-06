@@ -165,6 +165,10 @@ class DateHelperCls {
     return this.str('YYYY-MM-DD')
   }
 
+  public timeStr() {
+    return this.str('hh:mm:ss')
+  }
+
   /**
    * 格林威治时间戳
    * @returns 
